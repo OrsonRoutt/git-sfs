@@ -1,0 +1,8 @@
+*/.vscode/**
+*/build/**
+*.code-workspace
+*/bin/**
+*/obj/**
+*/compile_commands.json
+*/.cache/**
+test/**
