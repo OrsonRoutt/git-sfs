@@ -26,9 +26,16 @@ int main(int argc, char *argv[]) {
 			if (count > 0) std::cout << "Unpacked '" << path.string() << "' into " << count << " chunks.\n";
 		}
 
+		std::cout << "Done.\n";
+		#ifdef WINDOWS
+		std::cin.get();
+		#endif
 		return EXIT_SUCCESS;
 	} catch (std::exception const& e) {
 		std::cerr << "'" << core::demangle(typeid(e).name()) << "': " << e.what() << '\n';
+		#ifdef WINDOWS
+		std::cin.get();
+		#endif
 		return EXIT_FAILURE;
 	}
 }

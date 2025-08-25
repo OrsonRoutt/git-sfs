@@ -9,13 +9,12 @@ inline std::uint32_t pack_file(core::sfs_settings& settings, std::filesystem::pa
 	std::filesystem::path chunk_path = path;
 	chunk_path += ("." + std::to_string(count) + "." + settings.extension);
 	std::ifstream chunk_file;
-	chunk_file.open(chunk_path);
+	chunk_file.open(chunk_path, std::ios::binary);
 	if (!chunk_file.is_open()) {
 		std::cout << "Failed to open first chunk file for '" << path.string() << "', skipping.\n";
 		return 0;
 	}
-	std::filesystem::remove(path);
-	std::ofstream file(path);
+	std::ofstream file(path, std::ios::binary | std::ios::trunc);
 	if (!file.is_open()) throw std::runtime_error("Failed to open new SFS file at '" + path.string() + "'.");
 	char* buf = static_cast<char*>(std::malloc(settings.filesize));
 	while (chunk_file.is_open()) {
@@ -27,7 +26,7 @@ inline std::uint32_t pack_file(core::sfs_settings& settings, std::filesystem::pa
 		count += 1;
 		chunk_path = path;
 		chunk_path += ("." + std::to_string(count) + "." + settings.extension);
-		chunk_file.open(chunk_path);
+		chunk_file.open(chunk_path, std::ios::binary);
 	}
 	file.close();
 	std::free(buf);
