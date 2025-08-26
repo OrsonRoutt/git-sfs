@@ -9,7 +9,6 @@ To setup `git-sfs` for your repository, do the following:
 2. Configure `git-sfs` by editing `sfs_settings.txt`. Its format is as follows:
 ```
 <gitignore path>
-<gitignore max line length>
 <gitignore sfs marker>
 <chunk size (bytes)>
 <sfs chunk extension>
@@ -17,7 +16,6 @@ To setup `git-sfs` for your repository, do the following:
 The default configuration (setup for GitHub) is as follows:
 ```
 .gitignore
-512
 # :!git-sfs
 103809024
 sfs
