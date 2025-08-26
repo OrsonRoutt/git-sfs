@@ -18,12 +18,11 @@ namespace core {
 	struct sfs_settings {
 		std::filesystem::path dir;
 		std::string git_filename;
-		std::streamsize git_line_size;
 		char* git_delim;
 		std::streamsize filesize;
 		std::string extension;
 
-		inline sfs_settings(std::filesystem::path& dir, std::string& git_filename, std::streamsize git_line_size, char* git_delim, std::streamsize filesize, std::string extension) : dir(dir), git_filename(git_filename), git_line_size(git_line_size), git_delim(git_delim), filesize(filesize), extension(extension) {}
+		inline sfs_settings(std::filesystem::path& dir, std::string& git_filename, char* git_delim, std::streamsize filesize, std::string extension) : dir(dir), git_filename(git_filename), git_delim(git_delim), filesize(filesize), extension(extension) {}
 
 		inline ~sfs_settings() {
 			std::free(git_delim);
@@ -38,13 +37,6 @@ namespace core {
 		read_setting(file, buf, path);
 		std::string git_filename = buf;
 		read_setting(file, buf, path);
-		std::streamsize git_line_size;
-		try {
-			git_line_size = std::stol(buf);
-		} catch (std::exception const&) {
-			throw std::runtime_error("Failed to convert git line size setting to long, '" + std::string(buf) + "' at '" + path.string() + "', line 2.");
-		}
-		read_setting(file, buf, path);
 		char* git_delim = static_cast<char*>(std::malloc(std::strlen(buf) + 1));
 		std::strcpy(git_delim, buf);
 		read_setting(file, buf, path);
@@ -52,11 +44,11 @@ namespace core {
 		try {
 			filesize = std::stol(buf);
 		} catch (std::exception const&) {
-			throw std::runtime_error("Failed to convert filesize setting to long, '" + std::string(buf) + "' at '" + path.string() + "', line 4.");
+			throw std::runtime_error("Failed to convert filesize setting to long, '" + std::string(buf) + "' at '" + path.string() + "', line 3.");
 		}
 		read_setting(file, buf, path);
 		std::string extension = buf;
 		file.close();
-		return sfs_settings(dir, git_filename, git_line_size, git_delim, filesize, extension);
+		return sfs_settings(dir, git_filename, git_delim, filesize, extension);
 	}
 }

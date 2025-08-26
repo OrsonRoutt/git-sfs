@@ -25,7 +25,7 @@
 constexpr const char PROJECT_NAME[] = "sfs-pack";
 constexpr const unsigned char PROJECT_VERSION_MAJOR = 1;
 constexpr const unsigned char PROJECT_VERSION_MINOR = 0;
-constexpr const unsigned char PROJECT_VERSION_PATCH = 0;
+constexpr const unsigned char PROJECT_VERSION_PATCH = 1;
 
 // Gets the project version as a `const char*`.
 inline const char* get_version() {

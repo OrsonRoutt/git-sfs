@@ -11,19 +11,18 @@ namespace core {
 		if (!file.is_open()) throw std::runtime_error("Failed to open gitignore at '" + path.string() + "'.");
 		std::vector<std::filesystem::path> paths;
 		bool found = false;
-		char* buf = static_cast<char*>(std::malloc(settings.git_line_size));
-		while (!file.eof()) {
-			file.getline(buf, settings.git_line_size);
+		std::string line;
+		while (std::getline(file, line, '\n')) {
+			if (line.empty()) continue;
 			if (file.fail()) throw std::runtime_error("Failed to read line of gitignore at '" + path.string() + "'.");
 			if (found) {
-				paths.emplace_back(settings.dir / buf);
+				paths.emplace_back(settings.dir / line);
 			} else {
-				if (std::strcmp(buf, settings.git_delim) == 0) {
+				if (std::strcmp(line.c_str(), settings.git_delim) == 0) {
 					found = true;
 				}
 			}
 		}
-		std::free(buf);
 		file.close();
 		return paths;
 	}
