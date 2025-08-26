@@ -15,7 +15,7 @@ PKGCONFIG := pkg-config
 # Compiler flags.
 CXXFLAGS := -Wall -std=c++20 -I../shared
 ifeq ($(UNAME),Windows)
-CXXFLAGS += -DWINDOWS
+CXXFLAGS += -DWINDOWS -static
 endif
 CXXOBJFLAGS := -MMD
 ifneq ($(UNAME),Windows)
