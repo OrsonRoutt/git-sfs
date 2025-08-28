@@ -27,15 +27,11 @@ int main(int argc, char *argv[]) {
 		}
 
 		std::cout << "Done.\n";
-		#ifdef WINDOWS
 		std::cin.get();
-		#endif
 		return EXIT_SUCCESS;
 	} catch (std::exception const& e) {
 		std::cerr << "'" << core::demangle(typeid(e).name()) << "': " << e.what() << '\n';
-		#ifdef WINDOWS
 		std::cin.get();
-		#endif
 		return EXIT_FAILURE;
 	}
 }
