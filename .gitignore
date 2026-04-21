@@ -6,3 +6,5 @@
 */compile_commands.json
 */.cache/**
 test/**
+.ccls-cache/**
+*/.ccls-cache/**

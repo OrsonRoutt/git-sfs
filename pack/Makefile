@@ -6,27 +6,28 @@ UNAME := $(shell uname -s)
 endif
 
 # Executables.
-ifeq ($(UNAME),Windows)
-CXX := g++
-else
+ifeq ($(UNAME),Darwin)
 CXX := g++-15
+else
+CXX := g++
 endif
 PKGCONFIG := pkg-config
 # Compiler flags.
 CXXFLAGS := -Wall -std=c++20 -I../shared
-ifeq ($(UNAME),Windows)
-CXXFLAGS += -DWINDOWS -static
+ifeq ($(UNAME),Windows) # Platform defines
+CXXFLAGS += -DWindows -static
+else ifeq ($(UNAME),Darwin)
+CXXFLAGS += -DDarwin
+else ifeq ($(UNAME),Linux)
+CXXFLAGS += -DLinux
 endif
 CXXOBJFLAGS := -MMD
-ifneq ($(UNAME),Windows)
-CXXTARGETFLAGS := -rpath @executable_path/libs
-endif
+CXXTARGETFLAGS :=
 CXXDEBUGFLAGS := -DDEBUG
 CXXRELEASEFLAGS := -O3 -flto=auto -march=native -mtune=native
 ifneq ($(UNAME),Windows)
 CXXLIBFLAGS := -static-libgcc -static-libstdc++
 endif
-CXXLIBFLAGS :=
 # 'pkg-config'-searchable libs.
 PKGLIBS :=
 # Binary directory.
@@ -77,9 +78,6 @@ endif
 
 $(TARGET): $(BUILDDIRS) $(OBJS) # Build the target executable.
 	$(CXX) $(LIBFLAGS) $(CXXTARGETFLAGS) $(CXXFLAGS) -o $(TARGET) $(OBJS)
-ifeq ($(UNAME),Darwin)
-	-install_name_tool -delete_rpath "@loader_path" -delete_rpath "/usr/local/Cellar/gcc/15.1.0/lib/gcc/current/gcc/x86_64-apple-darwin24/15" -delete_rpath "/usr/local/Cellar/gcc/15.1.0/lib/gcc/current/gcc" -delete_rpath "/usr/local/Cellar/gcc/15.1.0/lib/gcc/current" -change "/usr/local/opt/gcc/lib/gcc/current/libstdc++.6.dylib" "@rpath/libstdc++.6.dylib" -change "/usr/local/opt/gcc/lib/gcc/current/libgcc_s.1.1.dylib" "@rpath/libgcc_s.1.1.dylib" $(TARGET)
-endif
 
 $(BUILDDIRS): # Make any build directories that don't exist.
 ifeq ($(UNAME),Windows)
