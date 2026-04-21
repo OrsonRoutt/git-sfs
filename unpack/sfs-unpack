@@ -1,0 +1,8 @@
+#!/bin/sh
+
+UNAMESTR=$(uname -s)
+if [ "$UNAMESTR" = "Linux" ]; then
+	./bin/sfs-pack-linux
+elif [ "$UNAMESTR" = "Darwin" ]; then
+	./bin/sfs-pack-mac
+fi

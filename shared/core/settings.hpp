@@ -16,21 +16,20 @@ namespace core {
 	}
 
 	struct sfs_settings {
-		std::filesystem::path dir;
 		std::string git_filename;
 		char* git_delim;
 		std::streamsize filesize;
 		std::string extension;
 
-		inline sfs_settings(std::filesystem::path& dir, std::string& git_filename, char* git_delim, std::streamsize filesize, std::string extension) : dir(dir), git_filename(git_filename), git_delim(git_delim), filesize(filesize), extension(extension) {}
+		inline sfs_settings(std::string& git_filename, char* git_delim, std::streamsize filesize, std::string extension) : git_filename(git_filename), git_delim(git_delim), filesize(filesize), extension(extension) {}
 
 		inline ~sfs_settings() {
 			std::free(git_delim);
 		}
 	};
 
-	inline sfs_settings load_settings(std::filesystem::path& dir, const char* filename) {
-		std::filesystem::path path = dir / filename;
+	inline sfs_settings load_settings(const char* filename) {
+		std::filesystem::path path = std::filesystem::absolute(filename);
 		std::ifstream file(path);
 		if (!file.is_open()) throw std::runtime_error("Failed to open settings file at '" + path.string() + "'.");
 		char buf[SETTING_SIZE];
@@ -49,6 +48,6 @@ namespace core {
 		read_setting(file, buf, path);
 		std::string extension = buf;
 		file.close();
-		return sfs_settings(dir, git_filename, git_delim, filesize, extension);
+		return sfs_settings(git_filename, git_delim, filesize, extension);
 	}
 }
